@@ -1,8 +1,0 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "io.github.chcarvill.twa",
-        "sha256_cert_fingerprints": ["9F:C0:54:E3:DD:52:96:DC:53:CE:B6:42:CB:F2:11:9D:2C:D4:E9:98:F0:C1:D8:9A:2D:CD:14:85:11:1D:D4:E5"]
-      }
-    }]
