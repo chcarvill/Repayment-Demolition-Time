@@ -101,7 +101,8 @@ function updateMomentum() {
 function updateProjection() {
   if (historyBalances.length === 0) return;
   const repay = parseFloat(document.getElementById('repayInput').value);
-  const annualRate = Math.max(0, parseFloat(document.getElementById('rateInput').value) || 20.99);
+  const rawRate = parseFloat(document.getElementById('rateInput').value);
+  const annualRate = Math.max(0, isNaN(rawRate) ? 20.99 : rawRate);
   const monthlyRate = annualRate / 100 / 12;
   const currentBalance = historyBalances[historyBalances.length - 1];
   const interestThisMonth = currentBalance * monthlyRate;
