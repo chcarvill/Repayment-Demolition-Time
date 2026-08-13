@@ -27,11 +27,14 @@ function setToggle(mode) {
 }
 
 // ── Parse raw pasted/typed input ──────────────
+// Handles: newline/comma/tab/semicolon separated lists, AND
+// comma-grouped currency amounts like "$4,850.20" pasted from a
+// bank statement (only treated as one number when it has a decimal
+// cents part — otherwise "100,200,300" still parses as three values).
 function parseBalances(raw) {
-  return raw.split(/[\n,\t;]+/)
-    .map(s => s.replace(/[^0-9.]/g, '').trim())
-    .filter(s => s.length > 0)
-    .map(s => parseFloat(s))
+  const matches = raw.match(/\d{1,3}(?:,\d{3})+\.\d+|\d+(?:\.\d+)?/g) || [];
+  return matches
+    .map(s => parseFloat(s.replace(/,/g, '')))
     .filter(n => !isNaN(n) && n > 0);
 }
 
@@ -98,7 +101,7 @@ function updateMomentum() {
 function updateProjection() {
   if (historyBalances.length === 0) return;
   const repay = parseFloat(document.getElementById('repayInput').value);
-  const annualRate = parseFloat(document.getElementById('rateInput').value) || 20.99;
+  const annualRate = Math.max(0, parseFloat(document.getElementById('rateInput').value) || 20.99);
   const monthlyRate = annualRate / 100 / 12;
   const currentBalance = historyBalances[historyBalances.length - 1];
   const interestThisMonth = currentBalance * monthlyRate;
